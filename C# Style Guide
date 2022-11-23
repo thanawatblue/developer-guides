@@ -1,0 +1,39 @@
+C# Style Guide
+
+1. ใช้วงเล็บปีกกา { } ตาม [Allman style](https://en.wikipedia.org/wiki/Indentation_style#Allman_style) โดยจะต้องเริ่มต้นที่บรรทัดใหม่เสมอ กรณีถ้าโค้ดที่มีเพียงบรรทัดเดียวไม่ต้องมีวงเล็บปีกกา แต่จะต้องย่อหน้าชุดคำสั่งนั้น และจะต้องไม่มีการใช้ซ้อนกันในโค้ดส่วนอื่นที่ใช้วงเล็บปีกกา (รายละเอียดเพิ่มเติมสามารถศึกษาได้จากกฎข้อ 17 ด้านล่าง) ยกเว้นการใช้คำสั่ง `using` สามารถที่จะใช้ในซ้อนกันได้ในคำสั่ง `using` อื่น โดยการเริ่มต้นบรรทัดใหม่ให้อยู่ภายในย่อหน้าเดียวกัน
+2. ใช้ช่องว่าง 4 ช่องในการย่อหน้า (ไม่ใช้ tabs)
+3. ใช้ **_camelCase** สำหรับ internal และ private fields และใช้ `readonly` ถ้าสามารถใช้ได้ 
+    1. ใช้ `_` นำหน้าสำหรับ internal และ private fields 
+    2. ใช้ `s_` นำหน้าสำหรับ static fields 
+    3. ใช้ `t_` นำหน้าสำหรับ thread static fields 
+
+    เมื่อมีการประกาศ static fields ควรตามด้วย `readonly` หลัง `static` ( เช่น `static readonly` ไม่ใช่ `readonly static`) และควรใช้ public fields เท่าที่จำเป็นและใช้ PascalCasing โดยไม่มีคำนำหน้า (Prefix) เมื่อใช้งาน
+
+4. หลีกเลี่ยงการใช้ keyword `this` ยกเว้นที่จำเป็นจริง ๆ
+5. กำหนดสิทธิ์การเข้าถึง (access modifier) เสมอ ถึงแม้ว่าจะเป็นค่าเริ่มต้นอยู่แล้ว เช่น `private string _foo` ไม่ใช้ `string _foo` และควรกำหนดไว้ข้างหน้า เช่น `public abstract` ไม่ใช้ `abstract public`
+6. Namespace imports (`using`) ควรกำหนดไว้ที่ด้านบนสุดก่อนประกาศ namespace และควรจัดเรียงตามตัวอักษร ยกเว้น `System.*` namespaces ที่จะต้องไว้ด้านบนสุดของ namespace imports อื่น ๆ
+7. หลีกเลี่ยงการใช้บรรทัดว่างมากกว่า 1 บรรทัด เช่น ห้ามมีบรรทัดว่าง 2 บรรทัดระหว่างตัวแปรแต่ละชนิด
+8. หลีกเลี่ยงการใช้ Free spaces เช่น  `if (someVar == 0)...` โดยที่จุด (.) หมายถึง Free spaces ซึ่งสามารถตรวจสอบได้โดยการเปิดโหมด View White Space (Ctrl+R, Ctrl+W) หรือ Edit -> Advanced -> View White Space หากใช้ Visual Studio เพื่อช่วยในการตรวจสอบ
+9. กรณีที่เป็นการแก้ไขของเก่า ที่ใช้รูปแบบต่างจากข้อกำหนด เช่น private members ตั้งชื่อไว้เป็น m_member แทนที่จะเป็น _member ให้ใช้รูปแบบเดิมตามของเก่าในไฟล์นั้น ๆ
+10. ใช้ var เมื่อมีการประกาศประเภทตัวแปรไว้ทางด้านขวามืออย่างชัดเจนเท่านั้น เช่น `var stream = new FileStream(...)` ไม่ใช้ `var stream = OpenStandardInput()` ในทำนองเดียวกันกับการใช้ `new()` จะสามารถใช้ได้เมื่อมีการประกาศชื่อตัวแปรไว้ที่ด้านซ้ายมืออย่างชัดเจน  เช่น `FileStream stream = new(...);` ไม่ใช้ `stream = new(...);`
+11. ใช้ keyword แทน BLC type เช่น `int, string, float` แทนการใช้ `Int32, String, Single`  รวมถึงการเรียกใช้ method ด้วย เช่น  `int.Parse` แทน `Int32.Parse`
+12. ใช้ PascalCasing ในการตั้งชื่อ constant local variables และ fields ยกเว้น กรณีที่เรียก interop
+13. ใช้ PascalCasing ในการตั้งชื่อ method รวมถึง local functions 
+14. ใช้ `nameof(…)` แทนการใช้ `("...")` ถ้าทำได้และดูเหมาะสม
+15. ควรประกาศ field ที่ด้านบนสุดก่อนการประกาศประเภทอื่น ๆ
+16. เมื่อใช้ labels (สำหรับ goto) ให้ย่อหน้า label ให้น้อยกว่าย่อหน้าปัจจุบัน
+17. เมื่อมีการใช้ if กรณีที่โค้ดคำสังมีเพียงบรรทัดเดียว
+    1. ไม่ใช้รูปแบบบรรทัดเดียว เช่น 
+       ```
+       if (source == null) throw new ArgumentNullException("source"); 
+       ```
+       ให้ใช้เป็น
+       ``` 
+       if (source == null)
+          throw new ArgumentNullException("source");
+       ```
+    2. ใช้วงเล็บปีกกา { } ในกรณีที่มีการใช้ `if` / `else if` / ... / `else` ผสมกัน และใช้ในกรณีที่มีการเขียนโค้ดคำสั่งหลายบรรทัด
+    3. การใช้วงเล็บปีกกา { } สามารถยกเว้นได้ในกรณีที่โค้ดคำสั่ง `if` / `else if` / ... / `else`  อยู่ในบรรทัดเดียวกัน
+18. กำหนดให้ type ที่เป็น internal หรือ private ให้เป็น static หรือ sealed เสมอ ยกเว้นว่าจะต้องมีการ derive
+
+อ้างอิง: [https://github.com/dotnet/runtime/blob/main/docs/coding-guidelines/coding-style.md](https://github.com/dotnet/runtime/blob/main/docs/coding-guidelines/coding-style.md)
